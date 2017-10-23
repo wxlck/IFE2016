@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>IFE JavaScript Task 01</title>
+  </head>
+<body>
+
+  <label>请输入北京今天空气质量：<input id="aqi-input" type="text"></label>
+  <button id="button">确认填写</button>
+
+  <div>您输入的值是：<span id="aqi-display">尚无录入</span></div>
+
+<script type="text/javascript">
+
+(function() {
+  
+  var aqi_input = document.getElementById('aqi-input');
+  var aqi_display = document.getElementById('aqi-display');
+  var btn = document.getElementById('button');
+  
+  var handler = function() {
+    var num = parseInt(aqi_input.value);
+    // 正则输入
+    // var val=node_in.value.replace( /^(\s|\u00A0)+|(\s|\u00A0)+$/g, "" );
+    if (!isNaN(num) && (num >= 0 ) && (num <= 1000)) {
+      aqi_display.innerHTML = num;
+    } else {
+      alert('请输入0-1000之间的数字');
+    }
+  }  
+  btn.onclick = function() {
+    handler();  
+  }
+
+  aqi_input.onkeyup = function(event) {
+    if (event.keyCode === 13) {
+      handler();
+    }
+  }
+
+
+
+
+// 兼容性
+//   if(btn.attachEvent){
+// 		btn.attachEvent("onclick",click);
+// 	}else{
+// 		btn.addEventListener("click",click,false);
+// 	}
+// })();
+
+
+
+
+//
+// document.getElementById('button').onclick = function() {
+//       var num;
+//       document.getElementById('aqi-display').innerHTML = isNaN( num = Number(document.getElementById('aqi-input').value.trim() || '~')
+//                ) ? '请输入数值' : num;
+//     };
+</script>
+</body>
+</html>
