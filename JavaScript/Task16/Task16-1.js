@@ -65,9 +65,11 @@ window.onload = function() {
 	 * 点击各个删除按钮的时候的处理逻辑
 	 * 获取哪个城市数据被删，删除数据，更新表格显示
 	 */
-	function delBtnHandle() {
+	function delBtnHandle(target) {
 	  // do sth.
-	  delete aqiData[aqiCity];  //???????
+	  var tr = target.parentElement.parentElement;
+	  var city = tr.children[0].innerHTML;
+	  delete aqiData[city];
 	  renderAqiList();
 	}
 
@@ -77,11 +79,14 @@ window.onload = function() {
 	  var btn1 = document.getElementById('add-btn')
 	  btn1.onclick = addBtnHandle;
 	  // 想办法给aqi-table中的所有删除按钮绑定事件，触发delBtnHandle函数
-	  var table = document.getElementById('aqi-table');
-	  var btn = table.getElementsByTagName('button');
-	  for (var i = 0; i < btn.length; i++) {
-	  	btn[i].onclick = delBtnHandle;
-	  }
+	  var table = document.getElementById("aqi-table");
+      var arrBtnDel = table.getElementsByClassName("del-btn");
+
+      table.addEventListener("click", function(e) {
+        if (e.target && e.target.nodeName === "BUTTON") {
+            delBtnHandle(e.target);
+        }
+      })
 	}
 
 	init();
