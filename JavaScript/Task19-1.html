@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>任务十九：基础JavaScript练习（二）</title>
+	<style>
+		li {
+			list-style: none;
+			float: left;
+			height: 30px;
+			background: red;
+			color: white;
+			margin-left: 8px;
+			padding: 0 7px;
+			line-height: 30px;
+			cursor: pointer;
+		}
+
+		ul {
+			padding: 0;
+		}
+	</style>
+</head>
+<body>
+	<input type="text" id="num">
+	<button id="leftIn">左侧入</button>
+	<button id="rightIn">右侧入</button>&nbsp;&nbsp;
+	<button id="leftOut">左侧出</button>
+	<button id="rightOut">右侧出</button>
+	<ul id="list"></ul>
+	<p>基于任务18</p>
+	<p>限制输入的数字在10-100</p>
+	<p>队列元素数量最多限制为60个，当超过60个时，添加元素时alert出提示</p>
+	<p>队列展现方式变化如图，直接用高度表示数字大小</p>
+	<p>实现一个简单的排序功能，如冒泡排序（不限制具体算法），用可视化的方法表达出来</p>
+	<script>
+		window.onload = function() {
+			var num = document.getElementById('num');
+			var oUl = document.getElementById('list');
+			var btn = document.getElementsByTagName('button');
+			var oLi = document.getElementsByTagName('li');
+
+			// 左侧入
+			btn[0].onclick = function() {
+				if (isNaN(num.value) || num.value === '') {
+					alert('请输入数字');
+					return false;
+				}
+				var newNode = document.createElement('li');
+				newNode.innerHTML = num.value;
+				oUl.insertBefore(newNode, oUl.firstChild);
+				num.value = null;
+			}
+
+			// 右侧入
+			btn[1].onclick = function () {
+				if (!isNaN(num.value) && num.value !== '') {
+					var newNode = document.createElement('li');
+					newNode.innerHTML = num.value;
+					oUl.appendChild(newNode);
+					num.value = null;
+				} else {
+					alert('请输入数字');
+				}
+			}
+			// 左侧出
+			btn[2].onclick = function () {
+				// 如果使用hasChildNodes()会有文本节点的干扰
+				// if (ul.hasChildNodes()) {
+				
+				if (oLi.length !== 0) {
+
+					// 使用firstChild有一个问题，如果有空格存在就会返回空格的文本节点
+					// 使用children[0]获取的是元素节点
+					// alert(ul.firstChild.innerHTML);
+					// ul.removeChild(ul.firstChild);
+					
+					alert(oUl.children[0].innerHTML);
+					oUl.removeChild(oUl.children[0]);
+				} else {
+					alert('队列为空');
+					return false;
+				}
+			}
+			// 右侧出
+			btn[3].onclick = function () {
+				if (oLi.length !== 0) {
+					alert(oUl.children[oUl.children.length-1].innerHTML);
+					oUl.removeChild(oUl.children[oUl.children.length-1]);
+				} else {
+					alert('队列为空');
+					return false;
+				}
+			}
+
+
+			// 给已出现的Li都添加点击事件
+			oUl.addEventListener("click", function(e) {
+		        oUl.removeChild(e.target);
+		    }, false)
+		} 
+	</script>
+</body>
+</html>
