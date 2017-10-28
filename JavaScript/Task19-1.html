@@ -40,29 +40,34 @@
 			var btn = document.getElementsByTagName('button');
 			var oLi = document.getElementsByTagName('li');
 
-			// 左侧入
-			btn[0].onclick = function() {
-				if (isNaN(num.value) || num.value === '') {
-					alert('请输入数字');
-					return false;
-				}
-				var newNode = document.createElement('li');
-				newNode.innerHTML = num.value;
-				oUl.insertBefore(newNode, oUl.firstChild);
-				num.value = null;
-			}
-
-			// 右侧入
-			btn[1].onclick = function () {
-				if (!isNaN(num.value) && num.value !== '') {
+			if (oLi.length <= 60) {
+				// 左侧入
+				btn[0].onclick = function() {
+					if (isNaN(num.value) || num.value === '' || num.value < 10 || num.value > 100) {
+						alert('请输入10-100之间的数字');
+						return false;
+					}
 					var newNode = document.createElement('li');
 					newNode.innerHTML = num.value;
-					oUl.appendChild(newNode);
+					oUl.insertBefore(newNode, oUl.firstChild);
 					num.value = null;
-				} else {
-					alert('请输入数字');
 				}
+
+				// 右侧入
+				btn[1].onclick = function () {
+					if (!isNaN(num.value) && num.value !== '' && num.value > 10 && num.value < 100) {
+						var newNode = document.createElement('li');
+						newNode.innerHTML = num.value;
+						oUl.appendChild(newNode);
+						num.value = null;
+					} else {
+						alert('请输入10-100之间的数字');
+					}
+				}
+			} else {
+				alert('队列元素已超过60个！')
 			}
+			
 			// 左侧出
 			btn[2].onclick = function () {
 				// 如果使用hasChildNodes()会有文本节点的干扰
