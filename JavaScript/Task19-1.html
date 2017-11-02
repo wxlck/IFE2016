@@ -6,18 +6,21 @@
 	<style>
 		li {
 			list-style: none;
-			float: left;
-			height: 30px;
+			display: inline-block;
+			width: 8px;
 			background: red;
-			color: white;
-			margin-left: 8px;
+			color: transparent;
+			margin: 0 8px 8px 0;
 			padding: 0 7px;
-			line-height: 30px;
 			cursor: pointer;
+			/*让不同长度的li实现底部对齐*/
+			vertical-align: bottom;
+
 		}
 
 		ul {
 			padding: 0;
+			vertical-align: bottom;
 		}
 	</style>
 </head>
@@ -28,45 +31,52 @@
 	<button id="leftOut">左侧出</button>
 	<button id="rightOut">右侧出</button>
 	<ul id="list"></ul>
-	<p>基于任务18</p>
+	<!-- <p>基于任务18</p>
 	<p>限制输入的数字在10-100</p>
 	<p>队列元素数量最多限制为60个，当超过60个时，添加元素时alert出提示</p>
 	<p>队列展现方式变化如图，直接用高度表示数字大小</p>
-	<p>实现一个简单的排序功能，如冒泡排序（不限制具体算法），用可视化的方法表达出来</p>
+	<p>实现一个简单的排序功能，如冒泡排序（不限制具体算法），用可视化的方法表达出来</p> -->
 	<script>
 		window.onload = function() {
 			var num = document.getElementById('num');
 			var oUl = document.getElementById('list');
 			var btn = document.getElementsByTagName('button');
 			var oLi = document.getElementsByTagName('li');
-
-			if (oLi.length <= 60) {
-				// 左侧入
-				btn[0].onclick = function() {
+			
+			// 左侧入
+			btn[0].onclick = function() {
+				if (oLi.length <= 60) {
 					if (isNaN(num.value) || num.value === '' || num.value < 10 || num.value > 100) {
 						alert('请输入10-100之间的数字');
 						return false;
 					}
 					var newNode = document.createElement('li');
 					newNode.innerHTML = num.value;
+					newNode.style.height = num.value * 2 + 'px';
 					oUl.insertBefore(newNode, oUl.firstChild);
-					num.value = null;
+					num.value = null;	//清空输入框
+				} else {
+					alert('队列元素数量超过60个！');
 				}
-
-				// 右侧入
-				btn[1].onclick = function () {
-					if (!isNaN(num.value) && num.value !== '' && num.value > 10 && num.value < 100) {
-						var newNode = document.createElement('li');
-						newNode.innerHTML = num.value;
-						oUl.appendChild(newNode);
-						num.value = null;
-					} else {
-						alert('请输入10-100之间的数字');
-					}
-				}
-			} else {
-				alert('队列元素已超过60个！')
+				
 			}
+
+			// 右侧入
+			btn[1].onclick = function () {
+				if (oLi.length > 60) {
+					alert('队列元素数量超过60个！');
+				} else if (!isNaN(num.value) && num.value !== '' && num.value > 10 && num.value < 100) {
+					var newNode = document.createElement('li');
+					newNode.innerHTML = num.value;
+					newNode.style.height = num.value * 2 + 'px';
+					oUl.appendChild(newNode);
+					num.value = null;
+				} else {
+					alert('请输入10-100之间的数字');
+				}
+			}
+			
+			
 			
 			// 左侧出
 			btn[2].onclick = function () {
