@@ -109,6 +109,68 @@
 			oUl.addEventListener("click", function(e) {
 		        oUl.removeChild(e.target);
 		    }, false)
+
+		    // 排序
+		    // 两者交换
+		    function swap(ele1, ele2) {
+			    var temp = ele1.offsetHeight;
+
+			    ele1.offsetHeight = ele2.offsetHeight;
+			    ele1.style.height = ele2.offsetHeight + "px";
+			    ele2.offsetHeight = temp;
+			    ele2.style.height = temp + "px";
+			}
+		    function bubbleSort() {
+			    var len  = oLi.length, i, j = 0, delay = 50, timer;
+
+			    i = len - 1;
+			    timer = setInterval(function() {
+			        if(i < 1) {
+			            clearInterval(timer);
+			        }
+			        if(j == i) {
+			            --i;
+			            j = 0;
+			        }
+			        if (oLi[j].offsetHeight > oLi[j+1].offsetHeight) {
+			            swap(oLi[j], oLi[j+1]);
+			        }
+			        ++j;
+			    }, delay);
+			};
+
+
+			// 选择排序？
+			// function slectionSort(queue) {
+			//     var eles = queue.querySelectorAll("li"),
+			//         len  = eles.length, i = 0, j = 1, min = 0, delay = 50, timer;
+
+			//     timer = setInterval(function() {
+			//         if(i == len - 1) {
+			//             clearInterval(timer);
+			//         }
+			//         if(j == len) {
+			//             swap(eles[i], eles[min]);
+			//             ++i;
+			//             min = i;
+			//             j = i + 1;
+			//         }
+			//         if(eles[j] && eles[j].offsetHeight < eles[min].offsetHeight) {
+			//             min = j;
+			//         }
+			//         ++j;
+			//     }, delay);
+			// };
+
+			// 将排序函数绑定到按钮
+			btn[4].onclick = function() {
+				if (oLi.length !== 0) {
+					bubbleSort();
+				} else {
+					alert('队列为空');
+					return false;
+				}
+			}
 		} 
 	</script>
 </body>
