@@ -5,8 +5,12 @@
 	<title>任务二十：基础JavaScript练习（三）</title>
 	<style>
 		#show {
-			background-color: #ccc;
+			/*background-color: #ccc;*/
 			display: inline-block;
+		}
+
+		span {
+			background-color: #ccc;
 		}
 	</style>
 </head>
@@ -28,8 +32,12 @@
 				search1 = document.getElementById('search1'),
 				search2 = document.getElementById('search2');
 				add.onclick = function() {
-					show.innerHTML += content.value;
+					show.innerHTML += '<span>' + content.value + '</span>&nbsp;' ;
 					content.value = '';
+				}
+
+				search2.onclick = function() {
+					search1.value.match(show);
 				}
 		}
 	</script>
