@@ -35,13 +35,9 @@
 			add.onclick = function() {
 				// 删除两端的空白字符
 				var str = content.value.trim();
-				var arrWord = str.split(/[^0-9a-zA-Z\u4e00-\u9fa5]+/).filter(function(e) {
-					return e != '';
-					}
-				});
-				arrData = arrData.concat(arrWord);
+				var arrWord = str.split(/(,|，|、|\s|\n|\r|\t)+/);
 				// content.value = '';
-				render();
+				show.innerHTML = arrWord;
 			}
 
 			search2.onclick = function() {
@@ -61,22 +57,7 @@
 
 
 
-			///**
-// * 渲染div元素
-// */
-// function render(value,direction) {
-//   var wrap = document.createElement('div');
-//   wrap.textContent = value;
-//   if (value === '') {
-//     return ;
-//   }
-//   if (direction === 'left') {
-//     output.insertBefore(wrap,output.firstChild);
-//   }
-//   if (direction === 'right') {
-//     output.appendChild(wrap);
-//   }
-// }
+
 // /**
 // * 读取数值
 // */
@@ -90,16 +71,16 @@
 // function delData(ele) {
 //   output.removeChild(ele);
 // }
-// /**
-// * 显示数值
-// */
+/**
+* 显示数值
+*/
 // function display(ele) {
 //   var value = ele.textContent;
 //   alert(value);
-// }
-// /**
+}
+// /*
 // * 查询数值
-// */
+// 
 // function searchData() {
 //   var value = search.previousSibling.previousSibling.value.trim();
 //   var re = new RegExp(value);
@@ -145,7 +126,7 @@
 // }
 
 // init();
-		}
+		// }
 	</script>
 </body>
 </html>
