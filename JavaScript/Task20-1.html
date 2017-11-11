@@ -30,29 +30,29 @@
 				show = document.getElementById('show'),
 				add = document.getElementById('add'),
 				search1 = document.getElementById('search1'),
-				search2 = document.getElementById('search2'),
-				arrData = [];
+				search2 = document.getElementById('search2');
+				// arrData = [];
 			add.onclick = function() {
 				// 删除两端的空白字符
 				var str = content.value.trim();
-				var arrWord = str.split(/(,|，|、|\s|\n|\r|\t)+/);
+				var arr = str.split(/(,+|，+|、+|\s+)+/g);
 				// content.value = '';
-				show.innerHTML = arrWord;
+				console.log(arr);
 			}
+}
+			// search2.onclick = function() {
+			// 	var str = search1.value.trim();
+			// 	render(str);
+			// }
 
-			search2.onclick = function() {
-				var str = search1.value.trim();
-				render(str);
-			}
-
-			function render(str) {
-				show.innerHTML = arrData.map(function(d) {
-					if (str != null && str.length > 0) {
-						d = d.replace(new RegExp(str, 'g'), '<span class = "select">' + str + '</span>');
-					}
-					return 'div' + d + '</div>';
-				}).join('');
-			}
+			// function render(str) {
+			// 	show.innerHTML = arrData.map(function(d) {
+			// 		if (str != null && str.length > 0) {
+			// 			d = d.replace(new RegExp(str, 'g'), '<span class = "select">' + str + '</span>');
+			// 		}
+			// 		return 'div' + d + '</div>';
+			// 	}).join('');
+			// }
 
 
 
@@ -77,7 +77,7 @@
 // function display(ele) {
 //   var value = ele.textContent;
 //   alert(value);
-}
+// }
 // /*
 // * 查询数值
 // 
