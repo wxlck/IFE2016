@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>任务二十一：基础JavaScript练习（四）</title>
+</head>
+<body>
+    <label for="text1">Tag：</label><input type="text" id="text1">
+    <div id="display1"></div>
+    <script>
+        var text1 = document.getElementById('text1');
+        text1.value.onkeyup = function() {
+            console.log(event.keyCode);
+            text1.value = '';
+        }
+    </script>
+</body>
+</html>
