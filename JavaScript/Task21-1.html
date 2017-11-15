@@ -3,15 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <title>任务二十一：基础JavaScript练习（四）</title>
+    <style>
+        #display1>div {
+            float: left;
+            height: 60px;
+            line-height: 60px;
+            background-color: #ccc;
+            margin: 10px 0 0 10px;
+            min-width: 60px;
+            text-align: center;
+            /*cursor: pointer;*/
+        }
+    </style>
 </head>
 <body>
+    <!-- 实现一个tag输入框
+    要求遇到用户输入空格，逗号，回车时，都自动把当前输入的内容作为一个tag放在输入框下面。
+    Tag不能有重复的，遇到重复输入的Tag，自动忽视。
+    每个Tag请做trim处理
+    最多允许10个Tag，多于10个时，按照录入的先后顺序，把最前面的删掉
+    当鼠标悬停在tag上时，tag前增加删除二字，点击tag可删除 -->
     <label for="text1">Tag：</label><input type="text" id="text1">
     <div id="display1"></div>
     <script>
         var text1 = document.getElementById('text1');
-        text1.value.onkeyup = function() {
-            console.log(event.keyCode);
-            text1.value = '';
+        var display1 = document.getElementById('display1');
+        text1.onkeyup = function(event) {
+            if (event.keyCode === 13 ||event.keyCode === 32 || event.keyCode === 188 || event.keyCode === 229) {
+                var x = this.value.trim();
+                display1.innerHTML += '<div>' + x + '</div>';
+                this.value = '';
+            }
+            // console.log(event.keyCode);
         }
     </script>
 </body>
