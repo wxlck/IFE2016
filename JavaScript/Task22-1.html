@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>任务二十一：基础JavaScript练习（四）</title>
+    <style>
+        #display1>div {
+            display: inline-block;
+            height: 60px;
+            line-height: 60px;
+            background-color: #ccc;
+            margin: 10px 0 0 10px;
+            min-width: 60px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        #display2>div {
+            display: inline-block;
+            height: 60px;
+            line-height: 60px;
+            background-color: #aaa;
+            margin: 10px 0 0 10px;
+            min-width: 60px;
+            text-align: center;
+            /*cursor: pointer;*/
+        }
+
+    </style>
+</head>
+<body>
+    <!-- 实现一个tag输入框
+    要求遇到用户输入空格，逗号，回车时，都自动把当前输入的内容作为一个tag放在输入框下面。
+    Tag不能有重复的，遇到重复输入的Tag，自动忽视。
+    每个Tag请做trim处理
+    最多允许10个Tag，多于10个时，按照录入的先后顺序，把最前面的删掉
+    当鼠标悬停在tag上时，tag前增加删除二字，点击tag可删除 -->
+    <label for="text1">Tag：</label><input type="text" id="text1">
+    <div id="display1"></div><br>
+    <textarea name="hobby" id="textArea" cols="30" rows="10"></textarea><br>
+    <button id="btn">确认兴趣爱好</button>
+    <div id="display2"></div>
+    <script>
+        var text1 = document.getElementById('text1');
+        var display1 = document.getElementById('display1');
+        var divs = display1.getElementsByTagName('div');
+        var arr = [];
+
+        var btn = document.getElementById('btn');
+        var arrData = [];
+
+        text1.onkeypress = function(event) {
+            var x = this.value.trim();
+            if (x != '' && x != ',' && x != '，') {
+                if (event.keyCode === 13 ||event.keyCode === 32 || event.keyCode === 188 || event.keyCode === 229) {
+                    x = x.replace(/[,，\s]+/,'');
+                    if (!arr.includes(x)) {
+                        arr.push(x);
+                        display1.innerHTML += '<div>' + x + '</div>'; 
+                    }
+                    if (divs.length > 10) {
+                            display1.removeChild(divs[0]);
+                    }
+                    this.value = '';
+                }
+            } else {
+                this.value = '';
+            };
+        }
+        for (let i = 0; i < divs.length; i++) {
+            var content1 = null;
+            divs[i].onmouseout = function() {
+                // let content = this.innerHTML;
+                this.innerHTML = content1;
+                this.style.background = "#ccc";
+            }
+            divs[i].onmouseover = function() {
+                var content = this.innerHTML;
+                this.innerHTML = '删除' + content;
+                this.style.background = "red";
+                content1 = content;
+            }
+            divs[i].onclick = function(e) {
+                display1.removeChild(e.target);
+            }
+        }
+       
+
+        btn.onclick = function() {
+            var textArea = document.getElementById('textArea')
+            //filter根据返回的值是否为真来判断是否保留元素
+            var arrWord = textArea.value.trim().split(/[^0-9a-zA-Z\u4e00-\u9fa5]+/).filter(function(e) {
+                if (e.length > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+            //concat() 方法用于合并两个或多个数组
+            arrData = arrData.concat(arrWord);
+            render();
+        }
+        function render(str) {
+            let display2 = document.getElementById('display2');
+            let divs = display2.getElementsByTagName('div');
+            display2.innerHTML = arrData.map(function(d) {
+                return '<div>' + d + '</div>';
+            }).join(''); // 用join将所有div连接起来
+            if (divs.length > 10) {
+                display2.removeChild(divs[0]);
+            }
+        }
+    </script>
+</body>
+</html>
