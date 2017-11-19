@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>任务二十一：基础JavaScript练习（四）</title>
     <style>
-        #display1>div {
+        #display1>div, #display2>div {
             display: inline-block;
             height: 60px;
             line-height: 60px;
@@ -14,18 +14,6 @@
             text-align: center;
             cursor: pointer;
         }
-
-        #display2>div {
-            display: inline-block;
-            height: 60px;
-            line-height: 60px;
-            background-color: #aaa;
-            margin: 10px 0 0 10px;
-            min-width: 60px;
-            text-align: center;
-            /*cursor: pointer;*/
-        }
-
     </style>
 </head>
 <body>
@@ -37,55 +25,78 @@
     当鼠标悬停在tag上时，tag前增加删除二字，点击tag可删除 -->
     <label for="text1">Tag：</label><input type="text" id="text1">
     <div id="display1"></div><br>
+
+    <!-- 实现一个兴趣爱好输入的功能
+    通过一个Textarea进行兴趣爱好的输入，可以通过用回车，逗号（全角半角均可），顿号，空格（全角半角、Tab等均可）等符号作为间隔。
+    当点击“确认兴趣爱好”的按钮时，将textarea中的输入按照你设定的间隔符，拆解成一个个的爱好，显示在textarea下方
+    爱好不能重复，所以在下方呈现前，需要做一个去重
+    每个爱好内容需要做trim处理
+    最多允许10个兴趣爱好，多于10个时，按照录入的先后顺序，把最前面的删掉 -->
     <textarea name="hobby" id="textArea" cols="30" rows="10"></textarea><br>
     <button id="btn">确认兴趣爱好</button>
     <div id="display2"></div>
     <script>
         var text1 = document.getElementById('text1');
         var display1 = document.getElementById('display1');
-        var divs = display1.getElementsByTagName('div');
         var arr = [];
-
+        var divs = display1.getElementsByTagName('div');
         var btn = document.getElementById('btn');
         var arrData = [];
+        var newArr;
 
-        text1.onkeypress = function(event) {
-            var x = this.value.trim();
-            if (x != '' && x != ',' && x != '，') {
-                if (event.keyCode === 13 ||event.keyCode === 32 || event.keyCode === 188 || event.keyCode === 229) {
+
+
+        text1.onkeypress = function(e) {
+            var key;
+            if(window.event) {
+                key = e.keyCode;
+            } else if(e.which) {
+                key = e.which; //IE
+            }
+            switch(key) {
+                //判断按键是否是空格，回车或者逗号
+                case 13:case 32:case 188:case 229: {
+                    var x = this.value.trim();
                     x = x.replace(/[,，\s]+/,'');
-                    if (!arr.includes(x)) {
-                        arr.push(x);
-                        display1.innerHTML += '<div>' + x + '</div>'; 
-                    }
-                    if (divs.length > 10) {
-                            display1.removeChild(divs[0]);
+                    if (x != '' && x != ',' && x != '，') {
+                        while (!arr.includes(x)) {
+                            arr.push(x);
+                            display1.innerHTML += '<div>' + x + '</div>'; 
+                            if (arr.length > 10) {
+                                arr.shift();
+                            }
+                            if (divs.length > 10) {
+                                display1.removeChild(divs[0]);
+                            }
+                            this.value = '';
+                        } 
                     }
                     this.value = '';
-                }
-            } else {
-                this.value = '';
-            };
-        }
-        for (let i = 0; i < divs.length; i++) {
-            var content1 = null;
-            divs[i].onmouseout = function() {
-                // let content = this.innerHTML;
-                this.innerHTML = content1;
-                this.style.background = "#ccc";
-            }
-            divs[i].onmouseover = function() {
-                var content = this.innerHTML;
-                this.innerHTML = '删除' + content;
-                this.style.background = "red";
-                content1 = content;
-            }
-            divs[i].onclick = function(e) {
-                display1.removeChild(e.target);
-            }
-        }
-       
 
+                    for (let i = 0; i < divs.length; i++) {
+                        var content1 = null;
+                        divs[i].onmouseout = function() {
+                            // let content = this.innerHTML;
+                            this.innerHTML = content1;
+                            this.style.background = "#ccc";
+                        }
+                        divs[i].onmouseover = function() {
+                            var content = this.innerHTML;
+                            this.innerHTML = '删除' + content;
+                            this.style.background = "red";
+                            content1 = content;
+                        }
+                        divs[i].onclick = function(e) {
+                            display1.removeChild(e.target);
+                        }
+                    }
+                }
+            }
+        }
+
+
+        
+    
         btn.onclick = function() {
             var textArea = document.getElementById('textArea')
             //filter根据返回的值是否为真来判断是否保留元素
@@ -98,15 +109,17 @@
             });
             //concat() 方法用于合并两个或多个数组
             arrData = arrData.concat(arrWord);
+            newArr = Array.from(new Set(arrData));
+            textArea.value = '';
             render();
         }
-        function render(str) {
+        function render() {
             let display2 = document.getElementById('display2');
             let divs = display2.getElementsByTagName('div');
-            display2.innerHTML = arrData.map(function(d) {
-                return '<div>' + d + '</div>';
+            display2.innerHTML = newArr.map(function(d) {
+                return '<div>' + d.trim() + '</div>';
             }).join(''); // 用join将所有div连接起来
-            if (divs.length > 10) {
+            while (divs.length > 10) {
                 display2.removeChild(divs[0]);
             }
         }
