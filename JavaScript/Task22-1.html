@@ -63,53 +63,74 @@
     <button id="post">后序排列</button>
     <script>
         var root = document.getElementsByClassName('content')[0];
+        var pre = document.getElementById('pre');
+        var in1 = document.getElementById('in');
+        var post = document.getElementById('post');
         var timer = null;
         var divList = [];
         //先序遍历 根-左-右
         function preOrder(node){
-            if(!node == null){
+            if(node !== null){
                 divList.push(node);
-                putstr(node.show()+ " ");
-                preOrder(node.left);
-                preOrder(node.right);
+                preOrder(node.firstElementChild);
+                preOrder(node.lastElementChild);
             }
         }
         //使用递归方式实现中序遍历 左-根-右
         function inOrder(node){
             if(!(node == null)){
-                inOrder(node.left);//先访问左子树
-                putstr(node.show()+ " ");//再访问根节点
-                inOrder(node.right);//最后访问右子树
+                inOrder(node.firstElementChild);//先访问左子树
+                divList.push(node);
+                // putstr(node.show()+ " ");//再访问根节点
+                inOrder(node.lastElementChild);//最后访问右子树
             }
         }
         //后序遍历 左-右-根
         function postOrder(node){
-            if(!node == null){
-                postOrder(node.left);
-                postOrder(node.right);
-                putStr(node.show()+ " ");
+            if(node !== null){
+                postOrder(node.firstElementChild);
+                postOrder(node.lastElementChild);
+                // putStr(node.show()+ " ");
+                divList.push(node);
             }
         }
 
         function color() {
-            // e.style.backgroundColor = 'blue';
-            var i = 0;
-            divList[i].style.backgroundColor = 'blue';
-            timer = setInterval(function(argument) {
-                i++;
-                if (i < divList.length) {
-                    divList[i-1].style.backgroundColor = '#fff';
-                    divList[i].style.backgroundColor = 'blue';
-                } else {
-                    clearInteval(timer);
-                    divList[divList.length-1],style.backgroundColor = '#fff';
-                }
-            },500)
-
+        var i = 0;
+        divList[i].style.backgroundColor = 'blue'
+        timer = setInterval(function (argument) {
+            i++;
+            if (i < divList.length) {
+                divList[i-1].style.backgroundColor = '#fff';
+                divList[i].style.backgroundColor = 'blue';
+            } else {
+                clearInterval(timer);
+                divList[divList.length-1].style.backgroundColor = '#fff';
+            }
+        },500)
+    }
+        function reset() {
+            divList = [];
+            clearInterval(timer);
+            var divs = document.getElementsByTagName('div');
+            for (var i = 0; i < divs.length; i++) {
+                divs[i].style.backgroundColor = '#fff';
+            }
         }
-        var pre = document.getElementById('pre');
         pre.onclick = function() {
+            reset();
             preOrder(root);
+            color();
+        };
+
+        in1.onclick = function() {
+            reset();
+            inOrder(root);
+            color();
+        };
+        post.onclick = function() {
+            reset();
+            postOrder(root);
             color();
         };
     </script>
