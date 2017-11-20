@@ -53,34 +53,31 @@
 			level = document.getElementById('level');
 			depth = document.getElementById('depth');
 		// BFS（广度优先遍历） 层次遍历
-		function levelOrder(node,divList) {
-			let i = 0;
-			if (node !== null) {
-				divList.push(node);
-				levelOrder(node.nextElementSibling, divList);
-				node = divList[i++];
-				levelOrder(node.firstElementChild, divList);
+		function levelOrder(node) {
+			var i = 0;
+			if (node) {
+				// divList.push(node);
+				var children = node.children;
+				for (var i = 0; i < children.length; i++) {
+					divList.push(node.children[i]);
+				}
+				node = node.children[1];
+				levelOrder(node);
 			}
 		}
-
+		
 		// DFS（深度优先遍历）
 		function depthOrder(node) {
 			if (node !== null) {
 				divList.push(node);
-				for (var i = 0, children = node.children; i < children.length; i++) {
-					divList.push(children[i]);
+				var children = node.children;
+				for (var i = 0; i < children.length; i++) {
+					// divList.push(children[i]);
 					depthOrder(children[i]);
 				}
 			}
 		}
-		function traverseDF(node,nodeList){
-			if(node){
-				nodeList.push(node);
-				for(var i=0;i<node.children.length;i++){
-					traverseDF(node.children[i],nodeList);
-				}	
-			}
-		}
+		
 
 		function color() {
 	        var i = 0;
@@ -94,7 +91,7 @@
 	                clearInterval(timer);
 	                divList[divList.length-1].style.backgroundColor = '#fff';
 	            }
-	        },400)
+	        },500)
 	    }
         function reset() {
             divList = [];
