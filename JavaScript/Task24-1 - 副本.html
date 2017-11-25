@@ -17,35 +17,23 @@
 <body>
 	<div class="content">Super
 		<div class="child_1">Cat
-			<div class="child_2">Apple
-				<div class="child_4">Pear</div>
-				<div class="child_4">Pig</div>
-				<div class="child_4">Cola</div>
-				<div class="child_4">Soccer</div>
-			</div>
-			<div class="child_2">Phone</div>
-			<div class="child_2">
-				<div class="child_3">Book</div>
-				<div class="child_3">School</div>
-			</div>
+			
 		</div>
 		<div class="child_1">Note
-			<div class="child_2">Human
-				<div class="child_3">Code</div>
-				<div class="child_3">Operate</div>
-				<div class="child_3">Man</div>
-			</div>
-			<div class="child_2">Program
-				<div class="child_3">Bement
-					<div class="child_4">Cat</div>
-				</div>
-				<div class="child_3">Glass</div>
-			</div>
+			
 		</div>
 		<div class="child_1">Fish</div>
 	</div>
 	<button id="level">广度遍历</button>
 	<button id="depth">深度遍历</button>
-	<script></script>
+	<script>
+		var btn = document.getElementById('level');
+		var div = document.getElementsByTagName('div');
+		level.onclick = function() {
+			for (var i = 0; i < div.length; i++) {
+				console.log(div[i].firstChild.nodeValue);
+			}
+		}
+	</script>
 </body>
 </html>

@@ -46,24 +46,36 @@
 	</div>
 	<button id="level">广度遍历</button>
 	<button id="depth">深度遍历</button>
+	<input type="text" id="content">
+	<button id="search">查找</button>
 	<script>
 		var timer = null,
 			root = document.getElementsByClassName('content')[0],
 			divList = [],
-			level = document.getElementById('level');
-			depth = document.getElementById('depth');
+			level = document.getElementById('level'),
+			depth = document.getElementById('depth'),
+			content = document.getElementById('content'),
+			search = document.getElementById('search'),
+			div = document.getElementsByTagName('div');
 		// BFS（广度优先遍历） 层次遍历
 		function levelOrder(node) {
-			var i = 0;
-			if (node) {
-				// divList.push(node);
-				var children = node.children;
-				for (var i = 0; i < children.length; i++) {
-					divList.push(node.children[i]);
-				}
-				node = node.children[1];
-				levelOrder(node);
-			}
+			var queue = [];
+            var p = null;
+            if(node) {
+                queue.push(node);
+            }
+            while (queue.length > 0) {
+                p = queue.shift();
+                divList.push(p);
+                if (p.firstElementChild) {
+                    queue.push(p.firstElementChild);
+                    p = p.firstElementChild;
+                    while (p.nextElementSibling) {
+                        queue.push(p.nextElementSibling);
+                        p = p.nextElementSibling;
+                    }
+                }
+            }
 		}
 		
 		// DFS（深度优先遍历）
@@ -72,7 +84,6 @@
 				divList.push(node);
 				var children = node.children;
 				for (var i = 0; i < children.length; i++) {
-					// divList.push(children[i]);
 					depthOrder(children[i]);
 				}
 			}
@@ -101,6 +112,29 @@
                 divs[i].style.backgroundColor = '#fff';
             }
         }
+        function search() {
+        	var i = 0;
+			timer = setInterval(function(){
+				if(i > 0){
+					divList[i-1].style.background = '#fff';
+				}		
+				if(i == arr.length){
+					clearInterval(timer);
+					if(content != null){
+						alert('未找到');
+					}
+				}else{
+					//匹配当前元素内容
+					if(nodeContent[i] == content){
+						divList[i].style.background = 'yellow';
+						clearInterval(timer);
+					}else{
+						divList[i].style.background = 'red';
+						i++;
+					}
+				}		
+			},400);
+        }
 
         depth.onclick = function() {
             reset();
@@ -113,6 +147,13 @@
             levelOrder(root);
             color();
         };
+
+        search.onclick = function() {
+        	reset();
+            levelOrder(root);
+            color();
+        	search();
+		}
 	</script>
 </body>
 </html>
