@@ -44,37 +44,17 @@
 		</div>
 		<div class="child_1">Fish</div>
 	</div>
-	<button id="level">广度遍历</button>
 	<button id="depth">深度遍历</button>
+	<input type="text" id="text">
+	<button id="search">查找</button>
 	<script>
 		var timer = null,
 			root = document.getElementsByClassName('content')[0],
 			divList = [],
-			level = document.getElementById('level'),
 			depth = document.getElementById('depth'),
+			
+			btn = document.getElementById('search'),
 			div = document.getElementsByTagName('div');
-
-		// BFS（广度优先遍历） 层次遍历
-		function levelOrder(node) {
-			var queue = [];
-            var p = null;
-            if(node) {
-                queue.push(node);
-            }
-            while (queue.length > 0) {
-                p = queue.shift();
-                divList.push(p);
-                if (p.firstElementChild) {
-                    queue.push(p.firstElementChild);
-                    p = p.firstElementChild;
-                    while (p.nextElementSibling) {
-                        queue.push(p.nextElementSibling);
-                        p = p.nextElementSibling;
-                    }
-                }
-            }
-		}
-		
 		// DFS（深度优先遍历）
 		function depthOrder(node) {
 			if (node !== null) {
@@ -101,7 +81,6 @@
 	            }
 	        },500)
 	    }
-
         function reset() {
             divList = [];
             clearInterval(timer);
@@ -117,11 +96,9 @@
             color();
         };
 
-        level.onclick = function() {
-            reset();
-            levelOrder(root);
-            color();
-        };
+        btn.onclick = function() {
+        	
+		}
 	</script>
 </body>
 </html>
