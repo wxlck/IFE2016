@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>任务二十三：JavaScript和树（二）</title>
+	<style>
+		div {
+			display: flex;
+			padding: 15px;
+			border: 1px solid black;
+			justify-content: space-between;
+			margin: 10px;
+			flex-wrap: wrap;
+		}
+	</style>
+</head>
+<body>
+	<div class="content">Super
+		<div class="child_1">Cat
+			<div class="child_2">Apple
+				<div class="child_4">Pear</div>
+				<div class="child_4">Pig</div>
+				<div class="child_4">Cola</div>
+				<div class="child_4">Soccer</div>
+			</div>
+			<div class="child_2">Phone</div>
+			<div class="child_2">
+				<div class="child_3">Book</div>
+				<div class="child_3">School</div>
+			</div>
+		</div>
+		<div class="child_1">Note
+			<div class="child_2">Human
+				<div class="child_3">Code</div>
+				<div class="child_3">Operate</div>
+				<div class="child_3">Man</div>
+			</div>
+			<div class="child_2">Program
+				<div class="child_3">Bement
+					<div class="child_4">Cat</div>
+				</div>
+				<div class="child_3">Glass</div>
+			</div>
+		</div>
+		<div class="child_1">Fish</div>
+	</div>
+	<button id="level">广度遍历</button>
+	<button id="depth">深度遍历</button>
+	<script>
+		var timer = null,
+			root = document.getElementsByClassName('content')[0],
+			divList = [],
+			level = document.getElementById('level'),
+			depth = document.getElementById('depth'),
+			div = document.getElementsByTagName('div');
+
+		// BFS（广度优先遍历） 层次遍历
+		function levelOrder(node) {
+			var queue = [];
+            var p = null;
+            if(node) {
+                queue.push(node);
+            }
+            while (queue.length > 0) {
+                p = queue.shift();
+                divList.push(p);
+                if (p.firstElementChild) {
+                    queue.push(p.firstElementChild);
+                    p = p.firstElementChild;
+                    while (p.nextElementSibling) {
+                        queue.push(p.nextElementSibling);
+                        p = p.nextElementSibling;
+                    }
+                }
+            }
+		}
+		
+		// DFS（深度优先遍历）
+		function depthOrder(node) {
+			if (node !== null) {
+				divList.push(node);
+				var children = node.children;
+				for (var i = 0; i < children.length; i++) {
+					depthOrder(children[i]);
+				}
+			}
+		}
+		
+
+		function color() {
+	        var i = 0;
+	        divList[i].style.backgroundColor = '#aaa'
+	        timer = setInterval(function (argument) {
+	            i++;
+	            if (i < divList.length) {
+	                divList[i-1].style.backgroundColor = '#fff';
+	                divList[i].style.backgroundColor = '#aaa';
+	            } else {
+	                clearInterval(timer);
+	                divList[divList.length-1].style.backgroundColor = '#fff';
+	            }
+	        },500)
+	    }
+
+        function reset() {
+            divList = [];
+            clearInterval(timer);
+            var divs = document.getElementsByTagName('div');
+            for (let i = 0; i < divs.length; i++) {
+                divs[i].style.backgroundColor = '#fff';
+            }
+        }
+
+        depth.onclick = function() {
+            reset();
+            depthOrder(root);
+            color();
+        };
+
+        level.onclick = function() {
+            reset();
+            levelOrder(root);
+            color();
+        };
+	</script>
+</body>
+</html>
