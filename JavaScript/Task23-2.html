@@ -51,6 +51,7 @@
 		var timer = null,
 			root = document.getElementsByClassName('content')[0],
 			divList = [],
+			nodeContent = [],
 			depth = document.getElementById('depth'),
 			
 			btn = document.getElementById('search'),
@@ -59,6 +60,8 @@
 		function depthOrder(node) {
 			if (node !== null) {
 				divList.push(node);
+				var value = node.firstChild.nodeValue.replace(/(^\s*)|(\s*$)/g, "");
+				nodeContent.push(value)
 				var children = node.children;
 				for (var i = 0; i < children.length; i++) {
 					depthOrder(children[i]);
@@ -67,20 +70,31 @@
 		}
 		
 
-		function color() {
-	        var i = 0;
-	        divList[i].style.backgroundColor = '#aaa'
-	        timer = setInterval(function (argument) {
-	            i++;
-	            if (i < divList.length) {
-	                divList[i-1].style.backgroundColor = '#fff';
-	                divList[i].style.backgroundColor = '#aaa';
-	            } else {
-	                clearInterval(timer);
-	                divList[divList.length-1].style.backgroundColor = '#fff';
-	            }
-	        },500)
-	    }
+		function animation(arr,content){
+		var i = 0;
+		t = setInterval(function(){
+			if(i>0){
+				arr[i-1].style.background = '#fff';
+			}		
+			if(i == arr.length){
+				clearInterval(t);
+				if(content != null){
+					alert('未找到');
+				}
+			}else{
+				//匹配当前元素内容
+				if(nodeContent[i] == content){
+					arr[i].style.background = 'yellow';
+					clearInterval(t);
+				}else{
+					arr[i].style.background = 'red';
+					i++;
+				}
+			}		
+		},400);
+	}
+
+
         function reset() {
             divList = [];
             clearInterval(timer);
@@ -93,11 +107,19 @@
         depth.onclick = function() {
             reset();
             depthOrder(root);
-            color();
+            animation(divList);
         };
 
         btn.onclick = function() {
-        	
+			reset();
+			nodeContent = [];//每次点击都清空
+			var content = document.getElementById('text').value.trim();
+			if(content){
+				depthOrder(root);
+				animation(divList,content);
+			}else{
+				alert("请输入查找的内容");
+			}
 		}
 	</script>
 </body>
