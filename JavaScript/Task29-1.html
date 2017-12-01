@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>任务二十九：表单（一）单个表单项的检验</title>
+	<style>
+		* {
+			padding: 0;
+			margin: 0;
+		}
+		#outer {
+			margin: 15px;
+		}
+
+		#text {
+			width: 200px;
+			height: 22px;
+			margin: 0 15px;
+			border: 1px solid #bbb;
+			border-radius: 3px;
+		}
+		#check {
+			padding: 6px;
+			background-color: #2f79ba;
+			border-width: 0;
+			color: #fff;
+			border-radius: 5px;
+		}
+
+		#des {
+			color: #bbb;
+			margin: 5px 0 0 50px;
+		}
+	</style>
+</head>
+<body>
+	<!-- 校验规则：
+	1.字符数为4~16位
+	2.每个英文字母、数字、英文符号长度为1
+	3.每个汉字，中文符号长度为2 -->
+	<div id="outer">
+		<label for="text">名称</label>
+		<input type="text" id="text">
+		<button id="check">验证</button>
+		<div id="des">必填，长度为4~16个字符</div>
+	</div>
+	<script>
+		var text = document.getElementById('text'),
+			des = document.getElementById('des'),
+			check = document.getElementById('check');
+		// 校验
+		check.onclick = function() {
+			console.log(content);
+		}
+
+		text.onkeyup = function(){
+			var content;
+			content = text.value.replace(/\s/g,'');
+		}
+	</script>
+</body>
+</html>

@@ -122,18 +122,6 @@
         }
 
         
-        for (var i = 0; i < divs.length; i++) {
-			divs[i].onclick = function(e) {
-				var children = this.children;
-				e.stopPropagation();//阻止事件冒泡
-				for (var j = 0; j < children.length; j++) {
-					if (this.className == '' || this.className == 'zhankai') {
-						children[j].className = 'hide';
-					}
-				}
-				this.className = 'zhedie';
-			}
-		}
 	</script>
 </body>
 </html> 
