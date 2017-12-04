@@ -50,7 +50,22 @@
 			check = document.getElementById('check');
 		// 校验
 		check.onclick = function() {
-			console.log(content);
+			var name = text.value.trim(),
+				length = name.length;
+			console.log(length);
+			if (name === '') {
+				des.innerHTML = '姓名不能为空';
+				text.style.borderColor = '#dd0010';
+				des.style.color = '#dd0010';
+			} else if (length >= 4 && length <= 16) {
+				des.innerHTML = '名称格式正确';
+				text.style.borderColor = '#60ba48';
+				des.style.color = '#60ba48';
+			} else {
+				des.innerHTML = '名称格式不正确';
+				text.style.borderColor = '#dd0010';
+				des.style.color = '#dd0010';
+			}
 		}
 
 		text.onkeyup = function(){
