@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>任务二十九：表单（一）单个表单项的检验</title>
+	<title>任务三十：表单（二）多个表单项的动态校验</title>
 	<style>
 		* {
 			padding: 0;
@@ -12,14 +12,20 @@
 			margin: 15px;
 		}
 
-		#text {
+		label {
+			display: inline-block;
+			text-align:right;
+			width: 70px;
+		}
+		input {
 			width: 200px;
 			height: 22px;
-			margin: 0 15px;
+			margin: 0 0 0 15px;
 			border: 1px solid #bbb;
 			border-radius: 3px;
 		}
 		#check {
+			margin-left: 253px;
 			padding: 6px;
 			background-color: #2f79ba;
 			border-width: 0;
@@ -27,9 +33,9 @@
 			border-radius: 5px;
 		}
 
-		#des {
+		.des {
 			color: #bbb;
-			margin: 5px 0 0 50px;
+			margin: 5px 0 0 90px;
 		}
 	</style>
 </head>
@@ -43,21 +49,152 @@
 	<div id="outer">
 		<label for="text">名称</label>
 		<input type="text" id="text">
+		<div id="textRul" class="des"></div>
+		<label for="password">密码</label>
+		<input type="password" id="password">
+		<div id="passwordRul" class="des"></div>
+		<label for="password1">密码确认</label>
+		<input type="password" id="password1">
+		<div id="password1Rul" class="des"></div>
+		<label for="mail">邮箱</label>
+		<input type="text" id="mail">
+		<div id="mailRul" class="des"></div>
+		<label for="phone">手机</label>
+		<input type="text" id="phone">
+		<div id="phoneRul" class="des"></div>
 		<button id="check">验证</button>
-		<div id="des">必填，长度为4~16个字符</div>
 	</div>
 	<script>
 		var text = document.getElementById('text'),
-			des = document.getElementById('des'),
+			password = document.getElementById('password'),
+			password1 = document.getElementById('password1'),
+			mail = document.getElementById('mail'),
+			phone = document.getElementById('phone'),
+			textRul = document.getElementById('textRul'),
+			passwordRul = document.getElementById('passwordRul'),
+			password1Rul = document.getElementById('password1Rul'),
+			mailRul = document.getElementById('mailRul'),
+			phoneRul = document.getElementById('phoneRul'),
 			check = document.getElementById('check');
-		// 校验
-		check.onclick = function() {
-			console.log(content);
+
+		function Getlength(str) {
+			var length = 0;
+			for (var i = 0, len = str.length; i < len; i++) {
+				var code = str.charCodeAt(i);
+				if (code >= 0 && code <=128) {
+					length += 1;
+				} else {
+					length += 2;
+				}
+			}
+			return length;
 		}
 
-		text.onkeyup = function(){
-			var content;
-			content = text.value.replace(/\s/g,'');
+		text.onfocus = function() {
+			textRul.innerHTML = '必填，长度为4~16个字符';
+		}
+
+		text.onblur = function() {
+			var str = text.value;
+			
+			if (Getlength(str) == 0) {
+				textRul.innerHTML = '姓名不能为空';
+				text.style.borderColor = '#dd0010';
+				textRul.style.color = '#dd0010';
+			} else if (Getlength(str) >= 4 && Getlength(str) <= 16) {
+				textRul.innerHTML = '名称格式正确';
+				text.style.borderColor = '#60ba48';
+				textRul.style.color = '#60ba48';
+			} else {
+				textRul.innerHTML = '请输入长度为4~16位字符';
+				text.style.borderColor = '#dd0010';
+				textRul.style.color = '#dd0010';
+			}
+		}
+
+		password.onfocus = function() {
+			passwordRul.innerHTML = '请输入4-16位的密码';
+		}
+
+		password.onblur = function() {
+			var str = password.value,
+				reg = /^[A-Za-z0-9_-]+$/;
+			if (!reg.test(str) || str.length < 4 || str.length > 16) {
+				passwordRul.innerHTML = '密码格式错误';
+				password.style.borderColor = '#dd0010';
+				passwordRul.style.color = '#dd0010';
+			} else {
+				passwordRul.innerHTML = '密码可用';
+				password.style.borderColor = '#60ba48';
+				passwordRul.style.color = '#60ba48';
+			}
+		}
+
+		password1.onfocus = function() {
+			password1Rul.innerHTML = '请再次输入相同密码';
+		}
+
+		password1.onblur = function() {
+			var str = password.value;
+			if (str !== password.value || str == '') {
+				password1Rul.innerHTML = '两次密码输入不一致';
+				password1.style.borderColor = '#dd0010';
+				password1Rul.style.color = '#dd0010';
+			} else {
+				password1Rul.innerHTML = '密码输入一致';
+				password1.style.borderColor = '#60ba48';
+				password1Rul.style.color = '#60ba48';
+			}
+		}
+
+		mail.onfocus = function() {
+			mailRul.innerHTML = '请输入邮箱';
+		}
+
+		mail.onblur = function() {
+			var str = mail.value,
+				reg = /\w+((-w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+/;
+			if (!reg.test(str)) {
+				mailRul.innerHTML = '邮箱格式错误';
+				mail.style.borderColor = '#dd0010';
+				mailRul.style.color = '#dd0010';
+			} else {
+				mailRul.innerHTML = '邮箱可用';
+				mail.style.borderColor = '#60ba48';
+				mailRul.style.color = '#60ba48';
+			}
+		}
+
+		phone.onfocus = function() {
+			phoneRul.innerHTML = '请输入手机号码';
+		}
+
+		phone.onblur = function() {
+			var str = phone.value,
+				reg = /0?(13|14|15|17|18)[0-9]{9}/;
+			if (!reg.test(str)) {
+				phoneRul.innerHTML = '手机格式错误';
+				phone.style.borderColor = '#dd0010';
+				phoneRul.style.color = '#dd0010';
+			} else {
+				phoneRul.innerHTML = '手机格式正确';
+				phone.style.borderColor = '#60ba48';
+				phoneRul.style.color = '#60ba48';
+			}
+		}
+
+		check.onclick = function() {
+			var input = document.getElementsByTagName('input'),
+				arr = [];
+			for (var i = 0; i < input.length; i++) {
+				arr.push(input[i].style.borderColor);
+			}
+			console.log(arr);
+				if(!arr.includes('rgb(221, 0, 16)') && !arr.includes('')) {
+					alert('格式正确');
+				} else {
+					alert('格式错误');
+				}
 		}
 	</script>
 </body>
