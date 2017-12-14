@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>任务三十二：表单（四）实现表单自动生成工厂</title>
+	<style>
+		* {
+			padding: 0;
+			margin: 0;
+		}
+		aside {
+			float: left;
+		}
+		fieldset {
+			width: 210px;
+			border-radius: 8px;
+			margin: 0 0 10px 20px;
+			padding: 8px;
+		}
+		button {
+			width: 60px;
+			height: 30px;
+			margin: 10px 0 0 100px;
+			border-radius: 5px;
+		}
+		#show {
+			min-width: 300px;
+			height: 300px;
+			margin: 20px 20px 20px 280px;
+			border: 1px solid black;
+			border-radius: 10px;
+		}
+	</style>
+</head>
+<body>
+	<aside>
+		<fieldset>
+			<legend>类型</legend>
+			<input type="radio" name="type" id="text"><label for="text">输入框</label>
+			<input type="radio" name="type" id="radio"><label for="radio">单选框</label>
+			<input type="radio" name="type" id="checkbox"><label for="checkbox">多选框</label>
+			<input type="radio" name="type" id="select"><label for="select">下拉框</label>
+			<input type="radio" name="type" id="textarea"><label for="textarea">文本域</label>
+		</fieldset>
+		<fieldset>
+			<legend>配置</legend>
+			<label for="name">名称:&nbsp;&nbsp;</label><input type="text" id="name" value="文本框"><br>
+			<label for="opt">选项：&nbsp;&nbsp;</label><input type="text" id="opt" placeholder="可用逗号，空格，回车来分隔选项">
+			<p id="display"></p>
+		</fieldset>
+		<button id="add">添加</button>
+	</aside>
+	<div id="show">
+		<h1>表单展示区</h1>
+	</div>
+</body>
+</html>
