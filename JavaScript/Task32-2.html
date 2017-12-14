@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IFE task 32</title>
+    <!-- <link rel="stylesheet" href="css/style.css"> -->
+    <style>
+    	#data_create fieldset:nth-of-type(n+3) {
+    display: none;
+}
+
+/*    根据类型的className来显示对于的模块表单    */
+#data_create .select~#box_item,
+#data_create .checkbox~#box_item,
+#data_create .radio~#box_item,
+#data_create .textarea~#length_control,
+#data_create .input~.password~#length_control,
+#data_create .input~.text~#length_control,
+#data_create .input~#rule_input {
+    display: block;
+}
+
+/*   设置的表单的样式     */
+#form_data_set {
+    width: 300px;
+    float: left;
+}
+#form_data_set fieldset {
+    margin-top: 20px;
+}
+#form_data_set label {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 14px;
+    margin-right: 8px;
+}
+#form_data_set #lable_box {
+    width: 200px;
+}
+#rule_input label,
+#type_box label {
+    width: 64px;
+    margin: 0;
+}
+#length_control input {
+    width: 20%;
+}
+#btn_add {
+    margin-top: 20px;
+    width: 80px;
+    height: 30px;
+    background-color: rgb(59,153,252);
+    color: #fff;
+    border: none;
+    font-size: 16px;
+    border-radius: 8px;
+}
+
+/*    展示的表单的样式     */
+
+#form_box {
+    margin: 0 40px 0 340px ;
+    min-width: 600px;
+    padding: 0 0 20px 0;
+    border: 1px solid #000;
+    border-radius: 10px;
+}
+#title {
+    text-align: center;
+    color: rgb(59,153,252);
+}
+#result {
+    width: 400px;
+    margin: 20px auto;
+    position: relative;
+}
+#result .radio_box input {
+    width: auto;
+    height: auto;
+    text-align: left;
+}
+#result .radio_box label {
+    display: inline-block;
+    position: static;
+    width: auto;
+    margin-right: 10px;
+}
+#result input {
+    width: 100%;
+    height: 30px;
+    outline: none;
+    border: 1px solid rgb(199,199,199);
+    border-radius: 8px;
+}
+#result .radio_box label:first-child,
+#result label {
+    display: block;
+    text-align: right;
+    position: absolute;
+    width: 300px;
+    left: -320px;
+    margin-top: 4px;
+}
+#result.style2 div {
+    margin-top: 10px;
+    width: 300px;
+    position:relative;
+}
+#result.style2 span {
+    top:0;
+    display: block;
+    position: absolute;
+    text-align: left;
+    margin-top: 4px;
+    right:-350px;
+    width:320px;
+}
+#result span {
+    display: block;
+    width: 100%;
+    margin-bottom: 20px;
+    margin-top: 8px;
+    font-size: 14px;
+    color: rgb(193,193,193);
+}
+#result .true {
+    color: rgb(39,198,82);
+    border-color: rgb(39,198,82);
+}
+#result .formNameLabel {
+    color: #000;
+}
+#result .error {
+    color: red;
+    border-color: red;
+}
+#result :first-child[id=submit_form] {
+    display: none;
+}
+#submit_form {
+    margin-top: 20px;
+    width: 80px;
+    height: 30px;
+    background-color: rgb(59,153,252);
+    color: #fff;
+    border: none;
+    font-size: 16px;
+    border-radius: 8px;
+    outline: none;
+}
+
+/*     单选框 多选框 下拉框选项输入框的样式       */
+#box_item_show {
+    display: flex;
+    justify-content: center;
+    flex-wrap:wrap;
+    margin: 20px;
+}
+#box_item input {
+    display: block;
+    width: 100%;
+    margin: 0 auto;
+}
+.item {
+    height: 20px;
+    background-color: red;
+    color: #fff;
+    margin: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+.item>span {
+    transition: width 0.2s linear;
+    display: inline-block;
+    width: 0;
+    height: 16px;
+    overflow: hidden;
+}
+.item:hover>span {
+    transition: width 0.2s linear;
+    width: 64px;
+    height: 16px;
+}
+.item:hover {
+    background-color: blue;
+}
+.hide {
+    display: none;
+}
+    </style>
+</head>
+<body>
+
+<aside id="form_data_set">
+    <form id="data_create">
+        <fieldset class="input" id="type_box">
+            <legend>类型</legend>
+
+            <input checked name="data_type" id="input" type="radio">
+            <label for="input">输入框</label>
+
+            <input name="data_type" id="radio" type="radio">
+            <label for="radio">单选框</label>
+
+            <input name="data_type" id="checkbox" type="radio">
+            <label for="checkbox">多选框</label>
+
+            <input name="data_type" id="select" type="radio">
+            <label for="select">下拉框</label>
+
+            <input name="data_type" id="textarea" type="radio">
+            <label for="textarea">文本域</label>
+        </fieldset>
+        <fieldset class="necessary" id="basic_box">
+            <legend>配置</legend>
+
+            <label>名称：</label><input id="lable_box" type="text" value="姓名">
+
+            <input name="data_need" id="necessary" checked type="radio">
+            <label for="necessary">必填</label>
+
+            <input name="data_need" id="unnecessary" type="radio">
+            <label for="unnecessary">选填</label>
+
+            <label>样式</label>
+            <select id="select_box">
+                <option>样式一</option>
+                <option>样式二</option>
+            </select>
+
+        </fieldset>
+        <fieldset class="text" id="rule_input">
+            <legend>规则</legend>
+
+            <input checked name="data_rule" id="text" type="radio">
+            <label for="text">文字</label>
+
+            <input name="data_rule" id="number" type="radio">
+            <label for="number">数字</label>
+
+            <input name="data_rule" id="email" type="radio">
+            <label for="email">邮箱</label>
+
+            <input name="data_rule" id="phone" type="radio">
+            <label for="phone">电话号码</label>
+
+            <input name="data_rule" id="password" type="radio">
+            <label for="password">密码</label>
+        </fieldset>
+        <fieldset id="box_item">
+            <legend>选项</legend>
+
+            <input id="box_item_input" placeholder="可用空格，逗号，回车来分隔选项" />
+            <span id="box_item_show"></span>
+        </fieldset>
+        <fieldset id="length_control">
+            <legend>长度限制</legend>
+
+            <label>字符范围：</label><input id="min_length" type="number" min="0" value="4">
+            <span>--</span>
+            <input id="max_length" type="number" min="1" value="16">
+        </fieldset>
+        <button id="btn_add" type="button">add</button>
+    </form>
+</aside>
+<div id="form_box">
+    <h1 id="title">表单展示区</h1>
+    <form id="result" class="style1">
+        <button type="button" id="submit_form">提交</button>
+        <input type="text" class="hide">
+    </form>
+</div>
+
+<script>
+	/**
+ * Created by wangtingdong on 16/4/15.
+ */
+
+//定义ShowTag构造器
+function ShowTag(ipt,box) {
+    this.arr = [];      //存放数组
+    this.box = box;     //显示tag的容器
+    this.ipt = ipt;     //输入框
+    this.length = 100;   //显示的tag的数目
+}
+//ShowTag构造器方法
+ShowTag.prototype= {
+    // 去重
+    trim: function () {
+        var i = 0, j = 0;
+        for (; i < this.arr.length; i++) {      //判断重复，如果元素重复就去掉该元素
+            for (j = i + 1; j < this.arr.length; j++) {
+                if (this.arr[i] == this.arr[j]) {
+                    this.arr.splice(j, 1);
+                    j--;
+                }
+            }
+        }
+        while (this.arr.length > this.length) {
+            this.arr.shift();
+        }
+        this.show();//去重后重新显示标签
+        return this;
+    },
+    //显示标签
+    show: function () {
+        var text = '';
+        for (var index = 0; index < this.arr.length; index++) {
+            text += '<div data-num="' + index + '" class="item"><span>点击删除</span>' + this.arr[index] + '</div>';
+        }
+        this.box.innerHTML = text;
+        return this;
+    },
+    //将输入的值添加到数组中
+    add: function () {
+        str = this.ipt.value.split(/[ ,、， \n\t]/);   //回车，逗号（全角半角均可），顿号，空格（全角半角、Tab等均可）等符号作为间隔
+        for (var i = 0; i < str.length; i++) {
+            var item = str[i];
+            if (item == '') {     //去掉空元素
+            }
+            else {
+                this.arr.push(item);
+            }
+        }
+        this.trim();   //调用去重函数
+        return this;
+    },
+    //点击元素删除
+    deleteEvent: function (e) {
+        //事件代理，判断点击的元素
+        var item = e.target.className == 'item' ? e.target : e.target.parentNode.className == 'item' ? e.target.parentNode : null;
+        if (item == null) {
+            return 0;
+        }
+        //删除第n个元素，之后重新显示元素
+        this.arr.splice(item.getAttribute('data-num'), 1);
+        this.show();
+    },
+    getData: function () {
+        return this.arr;
+    }
+};
+
+//定义TagIpt构造器
+function TagIpt(tag_ipt,tag_box) {
+    // 调用父类构造器, 确保(使用Function#call)"this" 在调用过程中设置正确
+    ShowTag.call(this, tag_ipt, tag_box);
+}
+
+// 建立一个由ShowTag.prototype继承而来的TagIpt.prototype对象.
+TagIpt.prototype=Object.create(ShowTag.prototype);
+// 设置"constructor" 属性指向Student
+TagIpt.prototype.constructor=ShowTag;
+
+TagIpt.prototype.init=function() {
+    //绑定事件
+    on(this.box, 'click', this.deleteEvent.bind(this));//删除元素事件的绑定
+    on(this.ipt, 'keyup', this.keyUp.bind(this));    //输入框输入内容事件的绑定
+    on(this.ipt, 'keydown', this.preventDefault);    //阻止输入框的默认事件
+};
+TagIpt.prototype.keyUp=function(e) {
+    if (e.keyCode == 188 || e.keyCode == 32 || e.keyCode == '13') {
+        this.add();
+        this.ipt.value = '';
+    }
+};
+TagIpt.prototype.preventDefault=function(e) {
+    if (e.keyCode == '13') {
+        e.preventDefault ? e.preventDefault() : e.returnValue = false;
+    }
+};
+
+
+
+
+	/**
+ * Created by wangtingdong on 16/4/15.
+ */
+//表单验证工厂
+function Form(data) {
+    this.data = data;
+    this.ipt = document.getElementById(data.id);
+    this.tip = this.ipt.nextElementSibling;
+    this.validator = data.validator;
+    this.init();
+}
+Form.prototype= {
+    init: function () {
+        on(this.ipt, 'focus', this.default_tip.bind(this));
+        on(this.ipt, 'blur', this.validator.bind(this));
+        on(this.ipt, 'change', this.validator.bind(this));
+    },
+    default_tip: function () {
+        this.tip.innerHTML = this.data.default_text;
+        this.tip.className = 'default';
+        this.ipt.className = 'default';
+    },
+    true_tip: function () {
+        this.tip.innerHTML = this.data.success_text;
+        this.tip.className = 'true';
+        this.ipt.className = 'true';
+    },
+    error_tip: function (i) {
+        this.tip.innerHTML = this.data.fail_text[i];
+        this.tip.className = 'error';
+        this.ipt.className = 'error';
+    }
+};
+
+
+
+
+	/**
+ * Created by wangtingdong on 16/4/15.
+ */
+//数据产生
+function Data_product(data_box) {
+    this.box = data_box;
+    this.id = 0;
+}
+Data_product.prototype= {
+    init: function () {
+        //调用事件绑定函数；
+        this.addEvent();
+    },
+    //表单之间的事件绑定;
+    addEvent: function () {
+        //事件代理，根据类型的选中来展示相应的表单
+        on($('#data_create'), 'change', this.showTable.bind(this));
+        on(this.box.style_box.box, 'change', this.setStyle.bind(this));
+    },
+    //通过data_box的box对象值，来获取相应的值
+    getText: function (data_box) {
+        return data_box.box[data_box.value];
+    },
+    showTable: function (e) {
+        if (e.target.getAttribute('type') == 'radio') {
+            e.target.parentNode.className = e.target.id;
+            if (!/necessary/.test(e.target.id))
+            //同步输入框中名字的设置
+                this.box.label_box.box.value = e.target.nextElementSibling.textContent;
+        }
+    },
+    //设置表单的信息获取的逻辑
+    getData: function () {
+        var data = {
+            lable: '',              //标签名字
+            type: '',               //表单类型
+            necessary: true,        //是否必需
+            input_type: '',         //input表单的种类
+            min_length: 0,          //text之类文本的最小长度限制
+            max_length: 1,          //text之类文本的最大长度限制
+            default_text: '',       //获取焦点的默认提示
+            success_text: '',       //输入正确的提示
+            item: [],               //radio的选项
+            fail_text: [],          //验证错误的提示
+            id: 0,                  //表单的id，初始值为0
+            validator: function () {
+            } //表单的验证规则
+        };
+
+        //配置表单的必需数据
+        data = this.getBaseData(data);
+        //根据type，配置对应的数据
+        switch (data.type) {
+            case 'textarea' :
+                data = this.getLengthRelativeData(data);
+                break;
+            case 'input' :
+                switch (data.input_type) {
+                    case 'text':
+                    case 'password':
+                        data = this.getLengthRelativeData(data);
+                        break;
+                    case 'number':
+                    case 'email':
+                    case 'phone':
+                        data = this.getInputRelativeData(data);
+                        break;
+                }
+                break;
+            case 'radio':
+            case 'select':
+            case 'checkbox':
+                data = this.getSpecialInputRelativeData(data);
+                break;
+        }
+        return data;
+    },
+    setStyle: function () {
+        var text = this.getText(this.box.style_box);
+        console.log(text);
+        this.box.result_box.className = text == '样式一' ? 'style1' : 'style2';
+    },
+    //总的添加表单的逻辑处理
+    addForm: function (data) {
+        switch (data.type) {
+            case 'input':
+                this.addInputForm(data);
+                break;
+            case 'textarea':
+                this.addTextAreaForm(data);
+                break;
+            case 'radio':
+                this.addRadioForm(data);
+                break;
+            case 'checkbox':
+                this.addCheckboxForm(data);
+                break;
+            case 'select':
+                this.addSelectForm(data);
+        }
+
+    },
+    //配置表单的必需数据
+    getBaseData: function (data) {
+        data.lable = this.getText(this.box.label_box);
+        data.type = this.getText(this.box.type_box);
+        data.necessary = this.getText(this.box.necessary_box) == 'necessary';
+        data.input_type = this.getText(this.box.input_type_box);
+        data.id = 'form' + this.id++;
+        return data;
+    },
+    //配置radio select checkbox的信息
+    getSpecialInputRelativeData: function (data) {
+        var items = this.box.item_box[2];
+        data.item = [];//清空之前的item;
+        for (var i = 0; i < items.length; i++) {
+            data.item.push(items[i].childNodes[1].data);
+        }
+        if (data.item.length == 0) {
+            alert('你还没有添加' + data.lable + '的选项');
+            data = null;
+        }
+        else if (data.item.length == 1) {
+            alert('你只添加了一个选项，无法创建' + data.lable);
+            data = null;
+        }
+        else {
+            data.default_text = (data.necessary ? '必填' : '选填') + '，请选择您的' + data.lable;
+            data.fail_text = [data.lable + '未选择'];
+            data.success_text = data.lable + '已选择';
+            data.validator = validator[data.type];
+        }
+        return data;
+    },
+    //配置text password和textarea的信息
+    getLengthRelativeData: function (data) {
+        data.min_length = this.getText(this.box.min_length_box);
+        data.max_length = this.getText(this.box.max_length_box);
+        data.fail_text = [
+            //'姓名不能为空','姓名长度不能小于4个字符','姓名长度不能大于16个字符'
+            data.lable + '不能为空',
+            data.lable + '长度不能小于' + data.min_length + '个字符',
+            data.lable + '长度不能大于' + data.max_length + '个字符'
+        ];
+        //名称格式正确
+        data.success_text = data.lable + '格式正确';
+        //必填，长度为4-16个字符
+        data.default_text = (data.necessary ? '必填' : '选填') + ',长度为' + data.min_length + '-' + data.max_length + '个字符';
+        data.validator = validator.length_control;
+        return data;
+    },
+    //配置Input中number，email，phone的信息
+    getInputRelativeData: function (data) {
+        data.input_type = this.getText(this.box.input_type_box);
+        data.fail_text = [
+            //'姓名不能为空','姓名长度不能小于4个字符','姓名长度不能大于16个字符'
+            data.lable + '不能为空',
+            data.lable + '格式不正确'
+        ];
+        //名称格式正确
+        data.success_text = data.lable + '格式正确';
+        //必填，长度为4-16个字符
+        data.default_text = (data.necessary ? '必填' : '选填') + '，请输入您的' + data.lable;
+        data.validator = validator[data.input_type];
+        return data;
+    },
+    /*
+     *根据data在结果表单中显示相应的表单
+     * 添加input表单
+     */
+    addInputForm: function (data) {
+        var box = document.createElement('div');
+        box.innerHTML = '<label>' + data.lable + '</label><input type="' + data.input_type + '" id="' + data.id + '"><span></span>';
+        this.box.result_box.insertBefore(box, this.box.submit_form);
+    },
+    //添加textarea表单
+    addTextAreaForm: function (data) {
+        var box = document.createElement('div');
+        box.innerHTML = '<label>' + data.lable + '</label><textarea id="' + data.id + '"></textarea><span></span>';
+        this.box.result_box.insertBefore(box, this.box.submit_form);
+    },
+    //添加radio单选框
+    addRadioForm: function (data) {
+        var box = document.createElement('div'),
+            text = '';
+        box.className = 'radio_box';
+        text += '<div id="' + data.id + '"><label class="formNameLabel" >' + data.lable + '</label>';
+        for (var i = 0; i < data.item.length; i++) {
+            var id = data.id + '' + i;
+            text += '<input type="radio" id="' + id + '" name="' + data.id + '"><label for="' + id + '">' + data.item[i] + '</label>';
+        }
+        text += '</div><span></span>';
+        box.innerHTML = text;
+        this.box.result_box.insertBefore(box, this.box.submit_form);
+    },
+    //添加checkbox多选框
+    addCheckboxForm: function (data) {
+        var box = document.createElement('div'),
+            text = '';
+        box.className = 'radio_box';
+        text += '<div id="' + data.id + '"><label class="formNameLabel" >' + data.lable + '</label>';
+        for (var i = 0; i < data.item.length; i++) {
+            var id = data.id + '' + i;
+            text += '<input type="checkbox" id="' + id + '" name="' + data.id + '"><label for="' + id + '">' + data.item[i] + '</label>';
+        }
+        text += '</div><span></span>';
+        box.innerHTML = text;
+        this.box.result_box.insertBefore(box, this.box.submit_form);
+    },
+    //添加select下拉框
+    addSelectForm: function (data) {
+        var box = document.createElement('div'),
+            text = '';
+        text += '<label>' + data.lable + '</label><select id="' + data.id + '">';
+        for (var i = 0; i < data.item.length; i++) {
+            text += '<option>' + data.item[i] + '</option>'
+        }
+        text += '</select><span></span>';
+        box.innerHTML = text;
+        this.box.result_box.insertBefore(box, this.box.submit_form);
+    }
+};
+
+
+
+
+//存放需要用的id节点
+var data_box = {
+    style_box: {
+        box: $('#select_box'),       //展示的方式
+        value: 'value'
+    },
+    type_box: {
+        box: $('#type_box'),         //标签名（input radio textarea checkbox select）
+        value: 'className'           //获取方式
+    },
+    label_box: {
+        box: $('#lable_box'),        //label名称 （如性别 姓名）
+        value: 'value'
+    },
+    necessary_box: {
+        box: $('#basic_box'),        //是否必填（true false）
+        value: 'className'
+    },
+    input_type_box: {
+        box: $('#rule_input'),       //input类型的规则（邮箱，号码，数字，文本，密码）
+        value: 'className'
+    },
+    item_box: [                      //showTag的参数
+        $('#box_item_input'),       //inputNode
+        $('#box_item_show'),        //展示选项的容器
+        document.getElementsByClassName('item')],   //选项的Node节点，可以获取选项
+    min_length_box: {
+        box: $('#min_length'),       //有长度限制的最小长度
+        value: 'value'
+    },
+    max_length_box: {
+        box: $('#max_length'),       //有长度限制的最大长度
+        value: 'value'
+    },
+    add_btn: $('#btn_add'),         //添加展示表单的按钮
+    result_box: $('#result'),       //表单的展示区域
+    submit_form: $('#submit_form')  //提交展示表单的按钮
+};
+//存放各个类型的validator函数
+var validator= {
+    //text password textarea
+    'length_control': function () {
+        min_length = this.data.min_length;
+        max_length = this.data.max_length;
+        var text = this.ipt.value;
+        if (text == '') {
+            if (this.data.necessary)
+                this.error_tip(0);
+            else {
+                this.default_tip();
+                return true;
+            }
+        }
+        else {
+            var total = (/[\x00-\xff]/.test(text) ? text.match(/[\x00-\xff]/g).length : 0) + (/[^\x00-\xff]/.test(text) ? text.match(/[^\x00-\xff]/g).length * 2 : 0);
+            if (total < min_length) {
+                this.error_tip(1);
+            }
+            else if (total > max_length) {
+                this.error_tip(2);
+            }
+            else {
+                this.true_tip();
+                return true;
+            }
+        }
+        return false;
+    },
+    'number': function () {
+        var text = this.ipt.value;
+        if (text == '') {
+            if (this.data.necessary)
+                this.error_tip(0);
+            else {
+                this.default_tip();
+                return true;
+            }
+        }
+        else {
+            if (/^\d*$/.test(text)) {
+                this.true_tip();
+                return true;
+            }
+            else {
+                this.error_tip(1);
+            }
+        }
+        return false;
+    },
+    'email': function () {
+        var text = this.ipt.value;
+        if (text == '') {
+            if (this.data.necessary)
+                this.error_tip(0);
+            else {
+                this.default_tip();
+                return true;
+            }
+        }
+        else {
+            if (/^[0-9a-z]+([._\\-]*[a-z0-9])*@([a-z0-9]+[a-z0-9]+.){1,63}[a-z0-9]+$/.test(text)) {
+                this.true_tip();
+                return true;
+            }
+            else {
+                this.error_tip(1);
+            }
+        }
+        return false;
+    },
+    'phone': function () {
+        var text = this.ipt.value;
+        if (text == '') {
+            if (this.data.necessary)
+                this.error_tip(0);
+            else {
+                this.default_tip();
+                return true;
+            }
+        }
+        else {
+            if (/\d{11}/.test(text)) {
+                this.true_tip();
+                return true;
+            }
+            else {
+                this.error_tip(1);
+            }
+        }
+        return false;
+    },
+    'radio': function () {
+        var item = $('#' + this.data.id).getElementsByTagName('input');
+        for (var i = 0; i < item.length; i++) {
+            if (item[i].checked) {
+                this.true_tip();
+                return true;
+            }
+        }
+        if (this.data.necessary)
+            this.error_tip(0);
+        else {
+            this.default_tip();
+            return true;
+        }
+        return false;
+    },
+    'checkbox': function () {
+        var children = this.ipt.children;
+        for (var i in children) {
+            if (children[i].checked) {
+                this.true_tip();
+                return true;
+            }
+        }
+        if (this.data.necessary)
+            this.error_tip(0);
+        else {
+            this.default_tip();
+            return true;
+        }
+        return false;
+    },
+    'select': function () {
+        this.true_tip();
+        return true;
+    }
+};
+var data_product = new Data_product(data_box),
+    tagIpt = new TagIpt(data_box.item_box[0],data_box.item_box[1],100),
+    formArr = [];
+
+data_product.init();
+tagIpt.init();
+
+//绑定点击事件，点击添加按钮之后，返回表单的数据
+on(data_product.box.add_btn,'click',function() {
+    var data = data_product.getData();
+    if (data != null) {
+        //在form中添加相应的表单
+        data_product.addForm(data);
+        //存放表单并且将表单绑定到Form中，绑定验证函数
+        formArr.push(new Form(data));
+        //在表单为radio和checkbox时直接展示默认的提示
+        if (data.type == 'radio' || data.type == 'checkbox') {
+            formArr[formArr.length - 1].default_tip();
+        }
+    }
+});
+//提交表单按钮绑定点击事件
+//点击之后判断是否都满足要求，如果没有，给出验证
+on(data_box.submit_form,'click',function() {
+    var text = '';
+    for (var i = 0; i < formArr.length; i++) {
+        text += !formArr[i].validator() ? formArr[i].tip.textContent + '\n' : '';
+    }
+    text == '' ? alert('提交成功') : alert(text);
+});
+
+function $(selector) {
+    return document.querySelector(selector);
+}
+//绑定事件函数
+function on(element,eventName,listener) {
+    if (element.addEventListener) {
+        element.addEventListener(eventName, listener, false);
+    }
+    else if (element.attachEvent) {
+        element.attachEvent('on' + eventName, listener);
+    }
+    else {
+        element['on' + eventName] = listener;
+    }
+}
+</script>
+</body>
+</html>
