@@ -4,8 +4,11 @@
 	<meta charset="UTF-8">
 	<title>任务三十一：表单（三）联动</title>
 	<style>
-		#shUniversity, #njUniversity, #company{
+		#company {
 			display: none;
+		}
+		form {
+			/*font-size: 20px;*/
 		}
 	</style>
 </head>
@@ -15,44 +18,35 @@
 	学校下拉菜单里的学校名单均为城市下拉菜单中所选的城市中的大学，当城市发生变化时，学校一起发生变化
 	城市及学校的数据随意编造即可，无需真实完整 -->
 	<form>
-		<input type="radio" name="man" value="stu" checked><label for="">在校生</label>
-		<input type="radio" name="man" value="notStu"><label for="">非在校生</label>
+		<input type="radio" name="man" value="1" id="stu" checked><label for="stu">在校生</label>
+		<input type="radio" name="man" value="0" id="notStu"><label for="notStu">非在校生</label>
 		<br>
 		<label>学校</label> 
-		<select name="university" id="university">
+		<select name="city" id="city">
 			<option value="bj">北京</option>
 			<option value="sh">上海</option>
 			<option value="nj">南京</option>
 		</select>
-		<select name="bjUniversity" id="bjUniversity">
+		<select name="university" id="university">
 			<option value="thu">清华大学</option>
 			<option value="pku">北京大学</option>
-		</select>
-		<select name="shUniversity" id="shUniversity">
-			<option value="fdu">复旦大学</option>
-			<option value="sjtu">上海交通大学</option>
-		</select>
-		<select name="njUniversity" id="njUniversity">
-			<option value="nju">南京大学</option>
-			<option value="seu">东南大学</option>
+			<option value="ruc">中国人民大学</option>
 		</select>
 		
 		<input type="text" id="company">
 	</form>
 	<script>
 		var radio = document.getElementsByName('man'),
-			label = document.getElementsByTagName('label')[0],
+			label = document.getElementsByTagName('label')[2],
 			university = document.getElementById('university'),
-			bjUniversity = document.getElementById('bjUniversity'),
-			shUniversity = document.getElementById('shUniversity'),
-			njUniversity = document.getElementById('njUniversity'),
+			city = document.getElementById('city'),
 			company = document.getElementById('company');
 
 		radio[0].onclick = function() {
 			if (this.checked === true) {
 				label.innerHTML = '学校';
 				university.style.display = 'inline-block';
-				bjUniversity.style.display = 'inline-block';
+				city.style.display = 'inline-block';
 				company.style.display = 'none';
 			}
 		}
@@ -61,12 +55,42 @@
 			if (this.checked === true) {
 				label.innerHTML = '就业单位';
 				university.style.display = 'none';
-				bjUniversity.style.display = 'none';
-				shUniversity.style.display = 'none';
-				njUniversity.style.display = 'none';
+				city.style.display = 'none';
 				company.style.display = 'inline-block';
 			} 
 		}
+
+		city.onchange = function() {
+			var cityData = {
+				bj: ['北京大学', '清华大学', '中国人民大学'],
+				sh: ['上海交通大学', '复旦大学', '上海大学'],
+				nj: ['南京大学', '东南大学', '南京工程学院']
+			}
+			var selected = city.options[city.selectedIndex].value;
+			university.innerHTML = '';
+			for (var i = 0, len = cityData[selected].length; i < len; i++) {
+				var option = document.createElement('option');
+				option.value = cityData[selected][i];
+				option.innerHTML = cityData[selected][i];
+				university.appendChild(option);
+			}
+		}
+		
 	</script>
+
+
+<!-- 	
+
+
+	1:拿到select对象： var myselect=document.getElementById(“test”);
+
+	2：拿到选中项的索引：var index=myselect.selectedIndex ; // selectedIndex代表的是你所选中项的index
+
+	3:拿到选中项options的value： myselect.options[index].value;
+
+	4:拿到选中项options的text： myselect.options[index].text; 
+
+
+-->
 </body>
 </html>
