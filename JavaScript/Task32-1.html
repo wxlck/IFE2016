@@ -18,6 +18,7 @@
 			padding: 8px;
 		}
 		button {
+			cursor: pointer;
 			width: 60px;
 			height: 30px;
 			margin: 10px 0 0 100px;
@@ -30,11 +31,29 @@
 			border: 1px solid black;
 			border-radius: 10px;
 		}
+		#display div {
+            display: inline-block;
+            background-color: #ccc;
+			min-width: 20px;
+			margin: 5px 5px 0 0;
+			text-align: center;
+			padding: 2px;
+			cursor: pointer;
+		}
+		h1 {
+			text-align: center;
+		}
+		#rule_input, #length_control{
+			display: none;
+		}
+		#length_control input {
+			width: 40px;
+		}
 	</style>
 </head>
 <body>
 	<aside>
-		<fieldset>
+		<fieldset id="type">
 			<legend>类型</legend>
 			<input type="radio" name="type" id="text"><label for="text">输入框</label>
 			<input type="radio" name="type" id="radio"><label for="radio">单选框</label>
@@ -44,14 +63,137 @@
 		</fieldset>
 		<fieldset>
 			<legend>配置</legend>
-			<label for="name">名称:&nbsp;&nbsp;</label><input type="text" id="name" value="文本框"><br>
-			<label for="opt">选项：&nbsp;&nbsp;</label><input type="text" id="opt" placeholder="可用逗号，空格，回车来分隔选项">
+			<label for="name">名称: <br></label><input type="text" id="name1" value="输入框"><br>
+			<label for="opt" id="optl">选项：<br></label><input type="text" id="opt" placeholder="可用逗号，空格，回车来分隔选项">
 			<p id="display"></p>
 		</fieldset>
+		<fieldset class="text" id="rule_input">
+            <legend>规则</legend>
+
+            <input checked name="data_rule" id="text" type="radio">
+            <label for="text">文字</label>
+
+            <input name="data_rule" id="number" type="radio">
+            <label for="number">数字</label>
+
+            <input name="data_rule" id="email" type="radio">
+            <label for="email">邮箱</label>
+
+            <input name="data_rule" id="phone" type="radio">
+            <label for="phone">电话号码</label>
+
+            <input name="data_rule" id="password" type="radio">
+            <label for="password">密码</label>
+        </fieldset>
+        <fieldset id="length_control">
+            <legend>长度限制</legend>
+            <label>字符范围：</label><input id="min_length" type="number" min="0" value="4">
+            <span>--</span>
+            <input id="max_length" type="number" min="1" value="16">
+        </fieldset>
 		<button id="add">添加</button>
 	</aside>
 	<div id="show">
 		<h1>表单展示区</h1>
+		<form action="">
+			<label for=""></label>
+		</form>
 	</div>
+	<script>
+		var $ = document.getElementById($);
+		var radios = document.getElementsByName('type');
+		var divs = display.getElementsByTagName('div');
+		// 改变名称
+		for (var i = 1; i < radios.length-1; i++) {
+			var arr = ['输入框','单选框','多选框','下拉框','文本域'];
+			radios[i].index = i;
+			radios[i].onclick = function() {
+				if (this.checked === true) {
+					name1.value = arr[this.index];
+					rule_input.style.display = 'none';
+		    		length_control.style.display = 'none';
+					opt.style.display = 'block';
+		    		optl.style.display = 'block';
+				}
+			}
+		}
+		radios[0].onclick = function() {
+			name1.value = '输入框';
+		    length_control.style.display = 'block';
+			rule_input.style.display = 'block';
+			opt.style.display = 'none';
+		    optl.style.display = 'none';
+		}
+		radios[4].onclick = function() {
+			name1.value = '文本域';
+		    length_control.style.display = 'block';
+		    opt.style.display = 'none';
+		    optl.style.display = 'none';
+		}		
+
+
+		//添加选项
+		opt.onkeypress = function(e) {
+            var key;
+            if(window.event) {
+                key = e.keyCode;
+            } else if(e.which) {
+                key = e.which; //IE
+            }
+            switch(key) {
+                //判断按键是否是空格，回车或者逗号
+                case 13:case 32:case 188:case 229: {
+                    var x = this.value.trim();
+                    x = x.replace(/[,，\s]+/,'');
+                    if (x != '' && x != ',' && x != '，') {
+                        while (!arr.includes(x)) {
+                            arr.push(x);
+                            display.innerHTML += '<div>' + x + '</div>'; 
+                            if (arr.length > 10) {
+                                arr.shift();
+                            }
+                            if (divs.length > 10) {
+                                display.removeChild(divs[0]);
+                            }
+                            this.value = '';
+                        } 
+                    }
+                    this.value = '';
+
+                    for (let i = 0; i < divs.length; i++) {
+                        var content1 = null;
+                        divs[i].onmouseout = function() {
+                            // let content = this.innerHTML;
+                            this.innerHTML = content1;
+                            this.style.background = "#ccc";
+                        }
+                        divs[i].onmouseover = function() {
+                            var content = this.innerHTML;
+                            this.innerHTML = '删除' + content;
+                            this.style.background = "red";
+                            content1 = content;
+                        }
+                        divs[i].onclick = function(e) {
+                            display.removeChild(e.target);
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+        add.onclick = function() {
+
+
+
+
+
+
+        }
+
+
+		
+	</script>
 </body>
 </html>
