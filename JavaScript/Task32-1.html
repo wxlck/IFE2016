@@ -55,7 +55,7 @@
 	<aside>
 		<fieldset id="type">
 			<legend>类型</legend>
-			<input type="radio" name="type" id="text" checked><label for="text">输入框</label>
+			<input type="radio" name="type" id="input" checked><label for="input">输入框</label>
 			<input type="radio" name="type" id="radio"><label for="radio">单选框</label>
 			<input type="radio" name="type" id="checkbox"><label for="checkbox">多选框</label>
 			<input type="radio" name="type" id="select"><label for="select">下拉框</label>
@@ -70,8 +70,8 @@
 		<fieldset class="text" id="rule_input">
             <legend>规则</legend>
 
-            <input checked name="data_rule" id="word" type="radio">
-            <label for="word">文字</label>
+            <input checked name="data_rule" id="text" type="radio">
+            <label for="text">文字</label>
 
             <input name="data_rule" id="number" type="radio">
             <label for="number">数字</label>
@@ -95,8 +95,8 @@
 	</aside>
 	<div id="show">
 		<h1>表单展示区</h1>
-		<form action="">
-			<label for=""></label>
+		<form id="formShow">
+			
 		</form>
 	</div>
 	<script>
@@ -164,7 +164,7 @@
 				length_control.style.display = 'block';
 			}
 		}
-		
+
 		radios[4].onclick = function() {
 			name1.value = '文本域';
 			rule_input.style.display = 'none';
@@ -227,11 +227,27 @@
 
 
 
+
         add.onclick = function() {
         	var a = name1.value;
-        	console.log(a);
-
-
+        	var b,c;
+        	var p = document.createElement('p');
+        	for (var i = 0; i < radios.length; i++) {
+        		if(radios[i].checked === true) {
+        			b = radios[i].id;
+        		}
+        	}
+        	// p.innerHTML += '<label>' + a + ':</label><input type="' + b +'">';
+        	
+        	if (radios[0].checked === true) {
+    			for (var j = 0; j < radio.length; j++) {
+    				if(radio[j].checked === true) {
+        				c = radio[j].id;
+        			}
+        		}
+        		p.innerHTML += '<label>' + a + ':</label><input type="' + c +'">';
+        	}
+        	formShow.appendChild(p);
 
 
 
