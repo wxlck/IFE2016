@@ -43,7 +43,7 @@
 		h1 {
 			text-align: center;
 		}
-		#rule_input, #length_control{
+		#optl,#opt {
 			display: none;
 		}
 		#length_control input {
@@ -55,7 +55,7 @@
 	<aside>
 		<fieldset id="type">
 			<legend>类型</legend>
-			<input type="radio" name="type" id="text"><label for="text">输入框</label>
+			<input type="radio" name="type" id="text" checked><label for="text">输入框</label>
 			<input type="radio" name="type" id="radio"><label for="radio">单选框</label>
 			<input type="radio" name="type" id="checkbox"><label for="checkbox">多选框</label>
 			<input type="radio" name="type" id="select"><label for="select">下拉框</label>
@@ -63,15 +63,15 @@
 		</fieldset>
 		<fieldset>
 			<legend>配置</legend>
-			<label for="name">名称: <br></label><input type="text" id="name1" value="输入框"><br>
+			<label for="name">名称: <br></label><input type="text" id="name1" value="文字"><br>
 			<label for="opt" id="optl">选项：<br></label><input type="text" id="opt" placeholder="可用逗号，空格，回车来分隔选项">
 			<p id="display"></p>
 		</fieldset>
 		<fieldset class="text" id="rule_input">
             <legend>规则</legend>
 
-            <input checked name="data_rule" id="text" type="radio">
-            <label for="text">文字</label>
+            <input checked name="data_rule" id="word" type="radio">
+            <label for="word">文字</label>
 
             <input name="data_rule" id="number" type="radio">
             <label for="number">数字</label>
@@ -102,10 +102,31 @@
 	<script>
 		var $ = document.getElementById($);
 		var radios = document.getElementsByName('type');
+		var radio = document.getElementsByName('data_rule');
 		var divs = display.getElementsByTagName('div');
 		// 改变名称
+		for (var j = 1; j < radio.length-1; j++) {
+			let arr = ['文字','数字','邮箱','电话号码','密码']
+			radio[j].index = j;
+			radio[j].onclick = function() {
+				if (this.checked === true) {
+					name1.value = arr[this.index];
+		    		length_control.style.display = 'none';
+				} else {
+					length_control.style.display = 'block';
+				}
+			}
+			radio[0].onclick = function() {
+				name1.value = '文字';
+				length_control.style.display = 'block';
+			}
+			radio[4].onclick = function() {
+				name1.value = '密码';
+				length_control.style.display = 'block';
+			}
+		}
 		for (var i = 1; i < radios.length-1; i++) {
-			var arr = ['输入框','单选框','多选框','下拉框','文本域'];
+			let arr = ['输入框','单选框','多选框','下拉框','文本域'];
 			radios[i].index = i;
 			radios[i].onclick = function() {
 				if (this.checked === true) {
@@ -117,19 +138,42 @@
 				}
 			}
 		}
+
 		radios[0].onclick = function() {
-			name1.value = '输入框';
-		    length_control.style.display = 'block';
 			rule_input.style.display = 'block';
 			opt.style.display = 'none';
 		    optl.style.display = 'none';
+			if (radio[0].checked === true) {
+				name1.value = '文字';
+				length_control.style.display = 'block';
+			}
+			if (radio[1].checked === true) {
+				name1.value = '数字';
+				length_control.style.display = 'none';
+			}
+			if (radio[2].checked === true) {
+				name1.value = '邮箱';
+				length_control.style.display = 'none';
+			}
+			if (radio[3].checked === true) {
+				name1.value = '电话号码';
+				length_control.style.display = 'none';
+			}
+			if (radio[4].checked === true) {
+				name1.value = '密码';
+				length_control.style.display = 'block';
+			}
 		}
+		
 		radios[4].onclick = function() {
 			name1.value = '文本域';
+			rule_input.style.display = 'none';
 		    length_control.style.display = 'block';
 		    opt.style.display = 'none';
 		    optl.style.display = 'none';
-		}		
+		}	
+
+
 
 
 		//添加选项
@@ -184,7 +228,8 @@
 
 
         add.onclick = function() {
-
+        	var a = name1.value;
+        	console.log(a);
 
 
 
