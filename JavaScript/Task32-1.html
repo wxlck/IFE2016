@@ -104,6 +104,7 @@
 		var radios = document.getElementsByName('type');
 		var radio = document.getElementsByName('data_rule');
 		var divs = display.getElementsByTagName('div');
+		var arr = [];
 		// 改变名称
 		for (var j = 1; j < radio.length-1; j++) {
 			let arr = ['文字','数字','邮箱','电话号码','密码']
@@ -227,17 +228,17 @@
 
 
 
-
+		var k = 0;
         add.onclick = function() {
+    		var p = document.createElement('p');
+        	var c = '';
         	var a = name1.value;
-        	var b,c;
-        	var p = document.createElement('p');
-        	for (var i = 0; i < radios.length; i++) {
+        	var b,c,d;
+        	for (let i = 0; i < radios.length; i++) {
         		if(radios[i].checked === true) {
         			b = radios[i].id;
         		}
         	}
-        	// p.innerHTML += '<label>' + a + ':</label><input type="' + b +'">';
         	
         	if (radios[0].checked === true) {
     			for (var j = 0; j < radio.length; j++) {
@@ -245,15 +246,44 @@
         				c = radio[j].id;
         			}
         		}
-        		p.innerHTML += '<label>' + a + ':</label><input type="' + c +'">';
+
+        		p.innerHTML += '<label>' + a + ':</label><input type="' + c + '" class = "' + c + '1"><span id="' + c + '1Rul"></span>';
+
+        	}
+
+			if (radios[1].checked === true) {
+				
+	        	for (let i = 0; i < divs.length; i++) {
+	        		divs[i].index = i;
+	        			c += '<input type="radio" name="radioShow' + k +'" id="radioShow'+k+divs[i].index + '"><label for="radioShow'+k+divs[i].index + '">'+divs[i].innerHTML+'</label>';
+	        		}
+	        		
+	        	p.innerHTML = '<label>' + a + ':</label>' + c;
+	        	k++;
+            }
+			if (radios[2].checked === true) {
+	        	for (let i = 0; i < divs.length; i++) {
+	        		divs[i].index = i;
+	        		c += '<input type="checkbox" name="checkboxShow' + k +'" id="checkboxShow'+k+divs[i].index + '"><label for="checkboxShow'+k+divs[i].index + '">'+divs[i].innerHTML+'</label>';
+	        	}
+	        	p.innerHTML = '<label>' + a + ':</label>' + c;
+	        	k++;
+            }
+			if (radios[3].checked === true) {
+	        	for (let i = 0; i < divs.length; i++) {
+	        		c += '<option>'+divs[i].innerHTML+'</option>';
+	        	}
+	        	p.innerHTML = '<label>' + a + ':</label><select id="selectShow' + k +'">'+ c + '</select>';
+	        	k++;
+            }
+
+        	if (radios[4].checked === true) {
+        		p.innerHTML += '<label>' + a + ':</label><textarea id = "textarea1"></textarea><span id="textarea1"></span>';
+
         	}
         	formShow.appendChild(p);
 
-
-
-        }
-
-
+      		}
 		
 	</script>
 </body>
